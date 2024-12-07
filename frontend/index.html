@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+          <ul>
+              <li><a href="index.html">Libros</a></li>
+              <li><a href="src/Gestion-Estudiante/indexEstudiante.html">Estudiantes</a></li>
+              <li><a href="#">Préstamo</a></li>
+          </ul>
+      </nav>
+  </header>
+    <div class="container">
+      <h1>Administración de Libros</h1>
+
+      <a href="/src/Gestion-Libros/gestionLibros.html">
+        <button  id="btn-add" class="btn-add">Insertar</button>
+
+      </a>
+     
+
+      <h2>Lista de Superheroes</h2>
+      <div class="table-container">
+          <table id="tabla-H">
+              <thead>
+                  <tr>
+                    <th>Imagen</th>
+                      <th>Codigo</th>
+                      <th>Nombre</th>
+                      <th>Categoría</th>
+                      <th>Tipo</th>
+                      <th>Stock</th>
+                      <th>Acciones</th>
+                  </tr>
+              </thead>
+              <tbody  id="lista-h">
+                
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>
