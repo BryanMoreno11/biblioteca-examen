@@ -2,6 +2,8 @@ import { Prestamo } from "../Entidades/Prestamo";
 import { createPrestamo, getPrestamos, devolucion } from "../Servicios/ServicioPrestamo";
 import { getLibro, updateStock } from "../Servicios/ServicioLibro";
 import { getEstudiante, updateFechaSancion } from "../Servicios/ServicioEstudiante";
+import { Categoria } from "../Entidades/Libro";
+import { Estudiante } from "../Entidades/Estudiante";
 export { ListaPrestamos };
 
 let ListaPrestamos: Prestamo[] = [];
@@ -22,7 +24,7 @@ export async function InsertarPrestamo() {
 
   if (
     await validarEstudianteNoSancionado(id_estudiante, fecha_prestamo) &&
-    await validarStockLibro(codigo) &&
+    await validarStockLibro(codigo) && await validarEdad(id_estudiante, codigo) &&
     validarPrestamoUnico(id_estudiante, codigo) &&
     validaciones(id_estudiante, codigo, fecha_prestamo, fecha_entrega)
   ) {
@@ -151,6 +153,17 @@ function validarPrestamoUnico(id_estudiante: number, codigo: number): boolean {
     return false;
   }
   return true;
+}
+
+async function validarEdad(id_estudiante:number, codigo:number):Promise<boolean>{
+    let data:Estudiante= await getEstudiante(id_estudiante.toString());
+   let estudiante= new Estudiante(data.id_estudiante,data.cedula,data.nombre,data.apellido,data.sexo,data.fecha_naci);
+    let libro= await getLibro(codigo.toString());
+    if(libro.categoria==Categoria.Erotico && estudiante.calcularEdad()<18){
+      window.alert("El estudiante es menor de edad por eso no puede solicitar este libro");
+      return false;
+    }
+    return true;
 }
 
 function mapearFecha(fecha: Date | null): Date  | null  {

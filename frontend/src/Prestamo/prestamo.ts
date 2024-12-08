@@ -20,7 +20,7 @@ cargarPrestamos().then(()=>ListarPrestamos());
 async function llenarCombos() {
     const estudiantes = await getEstudiantes();
     estudianteSelect.innerHTML = estudiantes.map(est => 
-        `<option value="${est.id_estudiante}">${est.nombre} ${est.apellido}</option>`
+        `<option value="${est.id_estudiante}">${est.cedula} (${est.nombre} ${est.apellido})</option>`
     ).join("");
 
     const libros = await getLibros();
