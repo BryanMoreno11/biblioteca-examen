@@ -94,4 +94,33 @@ async function deleteLibro(req, res) {
     }
 }
 
-module.exports = { getLibro, getLibros, createLibro, updateLibro, deleteLibro };
+
+async function updateStockLibro(req, res) {
+    const { id } = req.params; // Recupera el código del libro desde los parámetros de la solicitud
+    const { stock } = req.body; // Recupera el stock desde el cuerpo de la solicitud
+
+    // Verificar que se haya proporcionado el stock
+    if (stock === undefined) {
+        return res.status(400).json({ message: 'El campo stock es obligatorio' });
+    }
+
+    const query = 'UPDATE libro SET stock=$2 WHERE codigo=$1';
+    const values = [id, stock];
+
+    try {
+        const client = await pool.connect();
+        const result = await client.query(query, values);
+        client.release();
+        
+        if (result.rowCount > 0) {
+            res.status(200).json({ message: 'Stock actualizado correctamente' }); // Stock actualizado
+        } else {
+            res.status(404).json({ message: 'No existe el libro con ese código' }); // Libro no encontrado
+        }
+    } catch (err) {
+        res.status(500).json({ error: "Error en el servidor" }); // Error de conexión o de ejecución
+    }
+}
+
+
+module.exports = { getLibro, getLibros, createLibro, updateLibro, deleteLibro, updateStockLibro};

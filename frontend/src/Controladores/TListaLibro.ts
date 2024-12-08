@@ -40,7 +40,7 @@ export async function Insertar(imagen: string) {
   );
   img = imagen;
 
-  if(verificarCodigoRepetido(cod)==false && validaciones(cod, stock)==true){
+  if(verificarCodigoRepetido(cod)==false && validaciones(cod, stock,nom,anioPublicacion)==true){
     let obj= new Libro(cod,categoria,tipo,nom,editorial,autor,anioPublicacion,stock, img);
     await createLibro(obj);
      return true;
@@ -88,7 +88,7 @@ export async function Editar(codigo: number, imagen: string) {
   }
   let codigoRepetido = verificarCodigoRepetido(cod, index);
   if (
-    index !== -1 && codigoRepetido == false && validaciones(cod, stock)==true
+    index !== -1 && codigoRepetido == false && validaciones(cod, stock,nom,anioPublicacion)==true
   ) {
     let libro= new Libro(cod,categoria,tipo,nom,editorial,autor,anioPublicacion, stock, img);
     await updateLibro(cod.toString(), libro);
@@ -169,7 +169,7 @@ function verificarCodigoRepetido(codigo: number, index?: number) {
   }
 }
 
-function validaciones (codigo:number, stock:number){
+function validaciones (codigo:number, stock:number, nombre:string, anio:number){
   console.log("El codigo es ", codigo);
     if(codigo<=0 || codigo%1!=0 ){
       window.alert("Ingrese un código correcto");
@@ -177,6 +177,16 @@ function validaciones (codigo:number, stock:number){
     }
     if(stock<=0 || stock%1!=0){
       window.alert("Ingrese un stock correcto");
+      return false;
+    }
+
+    if(nombre.length<=0){
+      window.alert("Ingrese un nombre correcto");
+      return false;
+    }
+
+    if(anio<=0 || anio%1!=0 ){
+      window.alert("Ingrese un año correcto");
       return false;
     }
     return true;

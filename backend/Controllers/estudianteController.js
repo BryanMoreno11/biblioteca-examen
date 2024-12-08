@@ -93,4 +93,34 @@ async function deleteEstudiante(req, res) {
     }
 }
 
-module.exports = { getEstudiante, getEstudiantes, createEstudiante, updateEstudiante, deleteEstudiante };
+async function updateFechaFinSancion(req, res) {
+    const { id } = req.params; // Recupera el ID del estudiante desde los parámetros de la solicitud
+    const { fecha_fin_sancion } = req.body; // Recupera la nueva fecha de fin de sanción desde el cuerpo de la solicitud
+
+    // Verificar que se haya proporcionado la fecha de fin de sanción
+    if (!fecha_fin_sancion) {
+        return res.status(400).json({ message: 'El campo fecha_fin_sancion es obligatorio' });
+    }
+
+    const query = 'UPDATE estudiante SET fecha_fin_sancion=$2 WHERE id_estudiante=$1';
+    const values = [id, fecha_fin_sancion];
+
+    try {
+        const client = await pool.connect();
+        const result = await client.query(query, values);
+        client.release();
+        
+        if (result.rowCount > 0) {
+            res.status(200).json({ message: 'Fecha de fin de sanción actualizada correctamente' }); // Fecha actualizada
+        } else {
+            res.status(404).json({ message: 'No existe el estudiante con ese ID' }); // Estudiante no encontrado
+        }
+    } catch (err) {
+        res.status(500).json({ error: "Error en el servidor" }); // Error de conexión o de ejecución
+    }
+}
+
+
+
+
+module.exports = { getEstudiante, getEstudiantes, createEstudiante, updateEstudiante, deleteEstudiante, updateFechaFinSancion };

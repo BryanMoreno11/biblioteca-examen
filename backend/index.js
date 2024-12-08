@@ -9,8 +9,10 @@ app.use(express.urlencoded({ extended: false }));
 //importamos las rutas del archivo usuarioRoute que serán utilizadas bajo el prefijo api
 var libroRoutes = require('./Routes/libroRoutes');
 var estudianteRoutes=require('./Routes/estudianteRoutes');
+var prestamoRoutes= require('./Routes/prestamoRoutes');
 app.use('/api', libroRoutes);
 app.use('/api', estudianteRoutes);
+app.use('/api', prestamoRoutes);
 //arrancar el servidor
 app.listen("3000");
 console.log("server up localhost:3000");

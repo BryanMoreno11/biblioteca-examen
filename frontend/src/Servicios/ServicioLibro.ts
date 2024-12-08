@@ -81,3 +81,22 @@ export async function deleteLibro(id: string): Promise<any> {
         throw error;
     }
 }
+
+export async function updateStock(id: string, stock: number): Promise<any> {
+    try {
+        const response = await fetch(`${API_URL}/libro/stock/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ stock }), // Enviar solo el campo stock
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error al actualizar el stock del libro:', error);
+        throw error;
+    }
+}

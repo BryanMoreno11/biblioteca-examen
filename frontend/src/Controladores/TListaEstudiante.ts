@@ -13,7 +13,7 @@ export async function Insertar() {
     let sexo = (<HTMLInputElement>document.getElementById("sexo")).value as Sexo;
     let fechaNaci = new Date((<HTMLInputElement>document.getElementById("fechaNaci")).value);
 
-    if (!verificarCedulaRepetida(cedula) && validaciones(cedula, nombre, apellido)) {
+    if (!verificarCedulaRepetida(cedula) && validaciones(cedula, nombre, apellido,fechaNaci)) {
         let estudiante = new Estudiante(id, cedula, nombre, apellido, sexo, fechaNaci);
         console.log("El estudiante insertado es ",estudiante);
         await createEstudiante(estudiante);
@@ -31,7 +31,7 @@ export async function Editar(id: number) {
     let fechaNaci = new Date((<HTMLInputElement>document.getElementById("fechaNaci")).value);
 
     let index = ListaEstudiantes.findIndex(est => est.id_estudiante === id);
-    if (!verificarCedulaRepetida(cedula, index) && validaciones(cedula, nombre, apellido)) {
+    if (!verificarCedulaRepetida(cedula, index) && validaciones(cedula, nombre, apellido,fechaNaci)) {
         let estudiante = new Estudiante(id, cedula, nombre, apellido, sexo, fechaNaci);
         await updateEstudiante(id.toString(), estudiante);
         return true;
@@ -57,7 +57,7 @@ export function Listar() {
                   <td>${estudiante.apellido}</td>
                   <td>${estudiante.sexo}</td>
                   <td>${estudiante.fecha_naci? estudiante.fecha_naci.toLocaleDateString(): "N/A"}</td>
-                  <td>${estudiante.fecha_fin_sancion ? estudiante.fecha_fin_sancion : "N/A"}</td>
+                  <td>${estudiante.fecha_fin_sancion ? estudiante.fecha_fin_sancion.toLocaleDateString() : "N/A"}</td>
                   <td class="action-buttons">
                       <button class="editar">Editar</button>
                       <button class="eliminar">Eliminar</button>
@@ -109,7 +109,7 @@ function verificarCedulaRepetida(cedula: string, index?: number) {
 }
 
 // Validaciones
-function validaciones(cedula: string, nombre: string, apellido: string): boolean {
+function validaciones(cedula: string, nombre: string, apellido: string, fecha:Date): boolean {
     if (!cedula || cedula.length !== 10 || isNaN(Number(cedula))) {
         window.alert("Ingrese una cédula válida (10 dígitos)");
         return false;
@@ -122,6 +122,12 @@ function validaciones(cedula: string, nombre: string, apellido: string): boolean
         window.alert("El apellido no puede estar vacío");
         return false;
     }
+
+    if( isNaN(fecha.getTime())){
+        window.alert("Ingrese una fecha válida");
+        return false;
+    }
+
     return true;
 }
 

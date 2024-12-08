@@ -84,3 +84,22 @@ export async function deleteEstudiante(id: string): Promise<any> {
         throw error;
     }
 }
+
+export async function updateFechaSancion(id: string, fechaFinSancion: Date): Promise<any> {
+    try {
+        const response = await fetch(`${API_URL}/estudiante/sancion/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ fecha_fin_sancion: fechaFinSancion }), // Enviar solo el campo fecha_fin_sancion
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error al actualizar la fecha de sanción del estudiante:', error);
+        throw error;
+    }
+}

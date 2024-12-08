@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="prestamo.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prestamo</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <ul>
+          <li><a href="../../index.html">Libros</a></li>
+          <li><a href="../../src/Gestion-Estudiante/indexEstudiante.html">Estudiantes</a></li>
+          <li><a href="#">Prestamo</a></li>
+      </ul>
+  </nav>
+    <div class="container">
+      <h1>Prestamo</h1>
+     
+        <button  id="btn-add" class="btn-add">Insertar</button>
+     
+      <div class="table-container">
+          <table id="tabla">
+              <thead>
+                  <tr>
+                    <th>ID</th>
+                      <th>Cedula</th>
+                      <th>Libro</th>
+                      <th>Fecha Prestamo</th>
+                      <th>Fecha Entrega</th>
+                      <th>Fecha Devolución</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                  </tr>
+              </thead>
+              <tbody  id="lista-prestamos">
+                
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+  <div id="modal" class="modal" style="display: none;">
+    <div class="container-form" id="modal-content">
+        <a href="#" class="close-link" id="close-modal">&times;</a>
+        <h2>Insertar Préstamo</h2>
+        <form id="prestamo-form">
+            <div class="form-group">
+                <label for="id_estudiante">Estudiante</label>
+                <select id="id_estudiante" required></select>
+            </div>
+            <div class="form-group">
+                <label for="codigo">Libro</label>
+                <select id="codigo" required></select>
+            </div>
+            <div class="form-group">
+                <label for="fecha_prestamo">Fecha Préstamo</label>
+                <input type="date" id="fecha_prestamo" required />
+            </div>
+            <div class="form-group">
+                <label for="fecha_entrega">Fecha Entrega</label>
+                <input type="date" id="fecha_entrega" required />
+            </div>
+            <button type="submit" class="save-btn">Guardar</button>
+        </form>
+    </div>
+  
+  </div>
+
+  <div id="modal-devolucion" class="modal" style="display: none;">
+    <div class="container-form" id="modal-content-devolucion">
+        <a href="#" class="close-link" id="close-modal-devolucion">&times;</a>
+        <h2>Realizar Devolución</h2>
+        <form id="devolucion-form">
+            <div class="form-group">
+                <label for="fecha_devolucion">Fecha de Devolución</label>
+                <input type="date" id="fecha_devolucion" required />
+            </div>
+            <button type="submit" class="save-btn">Devolver</button>
+        </form>
+    </div>
+</div>
+
+    
+    <script type="module" src="../../src/Prestamo/prestamo.ts"></script>
+  </body>
+</html>

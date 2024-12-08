@@ -1,0 +1,239 @@
+/*Navbar*/
+
+/* Navbar styling */
+.navbar {
+    background-color: #2C3E50;
+    padding: 15px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar ul li {
+    margin: 0 20px;
+  }
+  
+  .navbar ul li a {
+    color: #ECF0F1;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+  
+  /* Hover effect */
+  .navbar ul li a:hover {
+    color: #E74C3C;
+  }
+  
+  /* Active link style */
+  .navbar ul li a:active {
+    color: #E67E22;
+  }
+  
+  
+  
+  /* Estilos Tabla */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    
+  }
+  h1{
+    color: black;
+    text-align: center;
+  }
+  
+  .container {
+   
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+  }
+  
+  .container h2 {
+    font-size: 24px;
+    margin: 0 0 20px;
+    text-align: center;
+  }
+  
+  /*Estilos para la tabla*/
+  
+  .table-container {
+    margin-top: 40px;
+    overflow-x: auto; /* Para que sea responsive */
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    overflow: hidden;
+  }
+  
+  table th, table td {
+    padding: 15px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: rgb(20, 18, 18);
+    color: white;
+    font-weight: bold;
+  }
+  
+  table td {
+    color: black;
+  }
+  
+  thead tr th:first-child {
+    width: 50px;
+  }
+  
+  tbody tr{
+    border-bottom: 1px solid black;
+  }
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+  
+  
+  /* Botón de agregar */
+  .btn-add {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  /* Estilos para botones de acción */
+  .devolucion {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s, transform 0.2s;
+    background-color: #000000;
+    color: black;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    color: white;
+  }
+  
+  .devolucion:hover {
+    transform: scale(1.05);
+  }
+  
+  
+  /*Estilos Modal*/
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Container Form Styling */
+.container-form {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+      transform: scale(0.9);
+      opacity: 0;
+  }
+  to {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+/* Form Styling */
+.form-content {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Save Button Styling */
+.save-btn {
+  display: block;
+  width: 100%;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.save-btn:hover {
+  background-color: #4cae4c;
+}
+
+/* Close Link Styling */
+.close-link {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-link:hover {
+  color: #ff0000;
+}
