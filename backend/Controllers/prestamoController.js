@@ -34,21 +34,27 @@ async function getPrestamos(req, res) {
 
 // Crear un préstamo nuevo
 async function createPrestamo(req, res) {
-    const { id_estudiante, codigo, fecha_prestamo, fecha_entrega } = req.body;
-    const query = 'INSERT INTO prestamo (id_estudiante, codigo, fecha_prestamo, fecha_entrega, fecha_devolucion, estado) VALUES ($1, $2, $3, $4, NULL, \'Prestado\')';
-    const values = [id_estudiante, codigo, fecha_prestamo, fecha_entrega];
+    const { id_estudiante, codigos, fecha_prestamo, fecha_entrega } = req.body; // `codigos` es un array de IDs de libros
+    const query = `
+        INSERT INTO prestamo (id_estudiante, codigo, fecha_prestamo, fecha_entrega, fecha_devolucion, estado)
+        VALUES ($1, $2, $3, $4, NULL, 'Prestado')
+    `;
+
     try {
         const client = await pool.connect();
-        const result = await client.query(query, values);
-        client.release();
+        await client.query('BEGIN'); // Iniciar una transacción
 
-        if (result.rowCount > 0) {
-            res.status(201).json({ message: 'Préstamo registrado exitosamente' }); // Préstamo creado
-        } else {
-            res.status(400).json({ message: 'No se pudo registrar el préstamo' }); // Error en la inserción
+        for (const codigo of codigos) {
+            const values = [id_estudiante, codigo, fecha_prestamo, fecha_entrega];
+            await client.query(query, values);
         }
+
+        await client.query('COMMIT'); // Confirmar transacción
+        client.release();
+        res.status(201).json({ message: 'Préstamos registrados exitosamente' });
     } catch (err) {
-        res.status(500).json({ error: "Error en el servidor" }); // Error de conexión o de ejecución
+        if (client) await client.query('ROLLBACK'); // Revertir cambios en caso de error
+        res.status(500).json({ error: "Error en el servidor" });
     }
 }
 

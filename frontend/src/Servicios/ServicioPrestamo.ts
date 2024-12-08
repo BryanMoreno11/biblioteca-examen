@@ -30,21 +30,33 @@ export async function getPrestamo(id: string): Promise<Prestamo> {
 }
 
 // Crear un nuevo préstamo
-export async function createPrestamo(prestamo: Prestamo): Promise<any> {
+export async function createPrestamo(
+    id_estudiante: number,
+    codigos: number[],
+    fecha_prestamo: Date,
+    fecha_entrega: Date
+): Promise<any> {
     try {
         const response = await fetch(`${API_URL}/prestamo`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(prestamo),
+            body: JSON.stringify({
+                id_estudiante,
+                codigos,
+                fecha_prestamo: fecha_prestamo.toISOString(),
+                fecha_entrega: fecha_entrega.toISOString(),
+            }),
         });
+
         if (!response.ok) {
             throw new Error(`Error: ${response.status} - ${response.statusText}`);
         }
+
         return await response.json();
     } catch (error) {
-        console.error('Error al crear el préstamo:', error);
+        console.error('Error al crear los préstamos:', error);
         throw error;
     }
 }

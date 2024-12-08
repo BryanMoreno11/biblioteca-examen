@@ -51,8 +51,20 @@
                 <select id="id_estudiante" required></select>
             </div>
             <div class="form-group">
-                <label for="codigo">Libro</label>
-                <select id="codigo" required></select>
+                <label>Seleccione los libros</label>
+                <div class="table-container table-container-libros">
+                    <table id="tabla-libros">
+                        <thead>
+                            <tr>
+                                <th>Seleccionar</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
             <div class="form-group">
                 <label for="fecha_prestamo">Fecha Préstamo</label>
@@ -65,8 +77,7 @@
             <button type="submit" class="save-btn">Guardar</button>
         </form>
     </div>
-  
-  </div>
+</div>
 
   <div id="modal-devolucion" class="modal" style="display: none;">
     <div class="container-form" id="modal-content-devolucion">

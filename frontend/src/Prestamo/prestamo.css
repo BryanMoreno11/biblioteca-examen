@@ -237,3 +237,9 @@ select {
 .close-link:hover {
   color: #ff0000;
 }
+
+/*Estilos de la tabla*/
+.table-container-libros {
+  height: 230px;
+  overflow-y: scroll;
+}

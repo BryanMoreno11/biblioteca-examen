@@ -8,35 +8,29 @@ export { ListaPrestamos };
 
 let ListaPrestamos: Prestamo[] = [];
 
-// Función insertar préstamo
-export async function InsertarPrestamo() {
-  let id_estudiante = Number((<HTMLInputElement>document.getElementById("id_estudiante")).value);
-  let codigo = Number((<HTMLInputElement>document.getElementById("codigo")).value);
-  let fecha_prestamo = new Date((<HTMLInputElement>document.getElementById("fecha_prestamo")).value);
-  let fecha_entrega = new Date((<HTMLInputElement>document.getElementById("fecha_entrega")).value);
-  fecha_prestamo.setMinutes(fecha_prestamo.getMinutes() + fecha_prestamo.getTimezoneOffset());
-  fecha_entrega.setMinutes(fecha_entrega.getMinutes() + fecha_entrega.getTimezoneOffset());
-  fecha_prestamo.setHours(0, 0, 0, 0);
-  fecha_entrega.setHours(0, 0, 0, 0);
+export async function InsertarPrestamos(id_estudiante: number, librosSeleccionados: number[], fecha_prestamo: Date, fecha_entrega: Date) {
 
-  console.log("La fecha de prestamo es ",fecha_prestamo);
-  console.log("La fecha de entrega es ",fecha_entrega.toISOString());
-
-  if (
-    await validarEstudianteNoSancionado(id_estudiante, fecha_prestamo) &&
-    await validarStockLibro(codigo) && await validarEdad(id_estudiante, codigo) &&
-    validarPrestamoUnico(id_estudiante, codigo) &&
-    validaciones(id_estudiante, codigo, fecha_prestamo, fecha_entrega)
-  ) {
-    let prestamo = new Prestamo(0, id_estudiante, codigo, fecha_prestamo, fecha_entrega,"Prestado", null );
-    await createPrestamo(prestamo);
-    await updateStock(codigo.toString(), (await getLibro(codigo.toString())).stock - 1);
-    return true;
+  if (!(await validarEstudianteNoSancionado(id_estudiante, fecha_prestamo)) || !validaciones(id_estudiante, fecha_prestamo, fecha_entrega)) {
+      return false;
   }
-  return false;
+
+  
+  try {
+      await createPrestamo(id_estudiante, librosSeleccionados, fecha_prestamo, fecha_entrega);
+
+      for (let codigo of librosSeleccionados) {
+          let libro = await getLibro(codigo.toString());
+          await updateStock(codigo.toString(), libro.stock-1);
+      }
+      window.alert("Préstamos registrados exitosamente.");
+      return true;
+  } catch (error) {
+      console.error("Error al registrar los préstamos:", error);
+      window.alert("Ocurrió un error al registrar los préstamos.");
+      return false;
+  }
 }
 
-// Función realizar devolución
 export async function RealizarDevolucion(id: number) {
   let fecha_devolucion = new Date((<HTMLInputElement>document.getElementById("fecha_devolucion")).value);
   fecha_devolucion.setMinutes(fecha_devolucion.getMinutes() + fecha_devolucion.getTimezoneOffset());
@@ -111,15 +105,12 @@ export async function cargarPrestamos() {
 }
 
 // Validaciones
-function validaciones(id_estudiante: number, codigo: number, fecha_prestamo: Date, fecha_entrega: Date): boolean {
+function validaciones(id_estudiante: number,  fecha_prestamo: Date, fecha_entrega: Date): boolean {
   if (id_estudiante <= 0 || isNaN(id_estudiante)) {
     window.alert("Ingrese un ID de estudiante válido");
     return false;
   }
-  if (codigo <= 0 || isNaN(codigo)) {
-    window.alert("Ingrese un código válido");
-    return false;
-  }
+  
   if (fecha_prestamo > fecha_entrega) {
     window.alert("La fecha de entrega  debe ser posterior a la fecha de préstamo");
     return false;
@@ -127,7 +118,7 @@ function validaciones(id_estudiante: number, codigo: number, fecha_prestamo: Dat
   return true;
 }
 
-async function validarEstudianteNoSancionado(id_estudiante: number, fecha_prestamo: Date): Promise<boolean> {
+export async function validarEstudianteNoSancionado(id_estudiante: number, fecha_prestamo: Date): Promise<boolean> {
   let estudiante = await getEstudiante(id_estudiante.toString());
   let fecha_fin_sancion= mapearFecha(estudiante.fecha_fin_sancion);
   if ( fecha_fin_sancion && fecha_fin_sancion  >= fecha_prestamo) {
@@ -136,7 +127,7 @@ async function validarEstudianteNoSancionado(id_estudiante: number, fecha_presta
   }
   return true;
 }
-async function validarStockLibro(codigo: number): Promise<boolean> {
+export async function validarStockLibro(codigo: number): Promise<boolean> {
   let libro = await getLibro(codigo.toString());
   if (libro.stock <= 0) {
     window.alert("No hay stock disponible para este libro");
@@ -145,7 +136,7 @@ async function validarStockLibro(codigo: number): Promise<boolean> {
   return true;
 }
 
-function validarPrestamoUnico(id_estudiante: number, codigo: number): boolean {
+export function validarPrestamoUnico(id_estudiante: number, codigo: number): boolean {
   console.log("La lista de presamos es: ", ListaPrestamos);
   let prestamoExistente = ListaPrestamos.find(p => p.id_estudiante == id_estudiante && p.codigo == codigo && p.estado == "Prestado");
   if (prestamoExistente) {
@@ -155,7 +146,7 @@ function validarPrestamoUnico(id_estudiante: number, codigo: number): boolean {
   return true;
 }
 
-async function validarEdad(id_estudiante:number, codigo:number):Promise<boolean>{
+export async function validarEdad(id_estudiante:number, codigo:number):Promise<boolean>{
     let data:Estudiante= await getEstudiante(id_estudiante.toString());
    let estudiante= new Estudiante(data.id_estudiante,data.cedula,data.nombre,data.apellido,data.sexo,data.fecha_naci);
     let libro= await getLibro(codigo.toString());
